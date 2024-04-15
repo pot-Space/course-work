@@ -1,43 +1,73 @@
 <script>
-  import Card from '../Card.svelte';
+  import CharCardMini from '$lib/components/CharCardMini.svelte';
+  import { fly } from 'svelte/transition';
+
   export let data;
-  const abcArr = ['a', 'b', 'c', 's'];
+  // const abcFields = [
+  //   'a',
+  //   'b',
+  //   'c',
+  //   'd',
+  //   'e',
+  //   'f',
+  //   'g',
+  //   'h',
+  //   'i',
+  //   'j',
+  //   'k',
+  //   'l',
+  //   'm',
+  //   'n',
+  //   'o',
+  //   'p',
+  //   'q',
+  //   'r',
+  //   's',
+  //   't',
+  //   'u',
+  //   'v',
+  //   'w',
+  //   'x',
+  //   'y',
+  //   'z',
+  // ];
 
   console.log(data);
-  // let lvl = 1;
   let name = '';
+  let searchedCards = data.cards;
 
-  // $: searchedCards = data.cards.filter((elem) => elem.lvl >= lvl);
-  $: searchedCards = data.cards.filter((elem) => {
-    return (
-      elem.name.toLowerCase().includes(name.toLowerCase()) ||
-      elem.name_ru.toLowerCase().includes(name.toLowerCase())
-    );
-  });
+  function handlerSearch() {
+    searchedCards = data.cards.filter((elem) => {
+      return (
+        elem.name.toLowerCase().includes(name.toLowerCase()) ||
+        elem.name_ru.toLowerCase().includes(name.toLowerCase())
+      );
+    });
+  }
 </script>
 
-<!-- <input
-    type="number"
-    bind:value={lvl}
-    min="0"
-    max="20"
-    on:input={(e) => {
-      if (+e.target.value < 1) e.target.value = 1;
-      if (+e.target.value > 10) e.target.value = 20;
-    }}
-  /> -->
 <div class="wrapper">
   <div class="search-container">
-    <input type="text" placeholder="Search" bind:value={name} />
+    <input
+      type="text"
+      placeholder="Search"
+      bind:value={name}
+      on:input={handlerSearch}
+    />
   </div>
 
   <div class="cards-container">
     {#if searchedCards.length}
       {#each searchedCards as card (card.id)}
-        <Card {card}></Card>
+        <CharCardMini {card}></CharCardMini>
       {/each}
     {:else}
-      <h2>Совпадений не найдено</h2>
+      <h1
+        in:fly={{ y: -100, duration: 800 }}
+        out:fly={{ y: -100, duration: 500 }}
+      >
+        Совпадений не найдено
+      </h1>
     {/if}
   </div>
 </div>
@@ -57,6 +87,8 @@
   .search-container input {
     padding-left: 36px;
     height: 34px;
+    width: 100%;
+    max-width: 400px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 60px;
     background:
@@ -66,10 +98,27 @@
   }
 
   .cards-container {
-    padding: 16px 44px;
+    padding: 12px 44px;
     display: flex;
     flex-wrap: wrap;
     gap: 8px 16px;
     overflow: hidden;
+  }
+
+  h1 {
+    color: #2e2e2e;
+    font-size: 26px;
+  }
+
+  @media (width <= 720px) {
+    .cards-container {
+      padding: 16px 32px;
+    }
+  }
+
+  @media (width <= 480px) {
+    .cards-container {
+      padding: 16px 12px;
+    }
   }
 </style>

@@ -1,5 +1,4 @@
 <script>
-  import Card from './Card.svelte';
   // export let data;
 </script>
 

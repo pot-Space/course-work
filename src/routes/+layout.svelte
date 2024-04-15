@@ -50,6 +50,7 @@
   .main-wrapper {
     display: grid;
     grid-template-rows: 48px 1fr 60px;
+    min-width: 320px;
     min-height: 100vh;
   }
 
@@ -60,6 +61,7 @@
 
   .main-nav a {
     display: flex;
+    justify-content: center;
     align-items: center;
     padding: 0px 8px;
     transition: all 0.3s;
